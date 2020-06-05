@@ -1,0 +1,16 @@
+body {
+	margin: 0;
+	padding: 0;
+	color: white;
+}
+
+
+html, body, #mapid {
+	height: 100vh;
+  width: 100vh;
+}
+
+.side-menu {
+	background-color: #303030;
+	padding: 10px;
+}
