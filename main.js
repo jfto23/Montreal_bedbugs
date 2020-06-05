@@ -32,6 +32,7 @@
           circles.push(circle);
         }
       }
+
       currentYear = L.layerGroup(circles);
       overlayMaps[j.toString()] = currentYear;
       circles = [];
@@ -42,9 +43,4 @@
 
   d3.csv("declarations-exterminations-punaises-de-lit.csv").then( data => drawCircles(data,"2019"))
 })();
-
-
-
-
-
 
