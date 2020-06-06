@@ -1,7 +1,6 @@
-(function() {
+const MainApp = (function() {
   let mymap;
   let mainLayers = [];
-  let neigbourLayers = [];
   let boroughLayers = [];
 
   // init map
@@ -77,22 +76,51 @@
       boroughMarkers= [];
     }
 
-    //2019 main layer testing
-    mymap.addLayer(boroughLayers[5]);
+    mymap.addLayer(mainLayers[0]);
+  }
 
+  function removeLayers() {
 
+    boroughLayers.forEach((element) => {
+      if (mymap.hasLayer(element)) {
+        mymap.removeLayer(element)
+      }
+    });
+
+    mainLayers.forEach((element) => {
+      if (mymap.hasLayer(element)) {
+        mymap.removeLayer(element)
+      }
+    });
+  }
+
+  function changeLayer() {
+    removeLayers();
+
+    let yearSelect = document.getElementById("year");
+    let index = yearSelect.selectedIndex;
+
+    let typeSelect = document.getElementById("type");
+    let currentType = typeSelect.options[typeSelect.selectedIndex];
+
+    if (currentType.value === "all") {
+      mymap.addLayer(mainLayers[index])
+    }
+    else {
+      mymap.addLayer(boroughLayers[index])
+    }
   }
 
 
 
-    /*
-    for (let select of document.querySelectorAll("select")) {
-      select.onchange = (e) => {
-      }
-    }
-    */
+
+
 
 
   d3.csv("declarations-exterminations-punaises-de-lit.csv").then( data => buildLayers(data))
+
+  return {
+    changeLayer
+  }
 })();
 
