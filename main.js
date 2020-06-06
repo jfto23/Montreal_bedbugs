@@ -1,5 +1,8 @@
 (function() {
   let mymap;
+  let mainLayers = [];
+  let neigbourLayers = [];
+  let boroughLayers = [];
 
   // init map
   (function() {
@@ -12,14 +15,30 @@
     }).addTo(mymap);
   })();
 
+  function getArrayNeighbourhoods() {
+    let neighborhoods = [];
+    d3.csv("quartierreferencehabitation.csv").then( data => {
+      for (let i=0;i<data.length;i++) {
+        neighborhoods.push(data[i].
 
-  function drawCircles(data) {
+      }
+
+
+    });
+
+    return neighborhoods
+  }
+
+  function buildLayers(data) {
     let circle;
-    let currentYear;
-    let overlayMaps= {};
     let circles = [];
+
+    getArrayNeighbourhoods();
+
+
     for (let j=2011; j<2020; j++) {
       for (let i=0; i<data.length; i++) {
+        //main layers
         if (data[i].DATE_DECLARATION.startsWith(j.toString())) {
           circle = L.circleMarker([data[i].LATITUDE, data[i].LONGITUDE], {
             color: "cyan",
@@ -28,19 +47,32 @@
             fillOpacity: 0.15,
             radius: 10,
           });
-
           circles.push(circle);
         }
+
+        //neighborhoods layers
+
+        
       }
 
-      currentYear = L.layerGroup(circles);
-      overlayMaps[j.toString()] = currentYear;
+      mainLayers.push(L.layerGroup(circles));
       circles = [];
     }
-    L.control.layers(overlayMaps).addTo(mymap);
-    mymap.addLayer(currentYear);
+    //2019 main layer testing
+    mymap.addLayer(mainLayers[8]);
+
   }
 
-  d3.csv("declarations-exterminations-punaises-de-lit.csv").then( data => drawCircles(data,"2019"))
+
+
+    /*
+    for (let select of document.querySelectorAll("select")) {
+      select.onchange = (e) => {
+      }
+    }
+    */
+
+
+  d3.csv("declarations-exterminations-punaises-de-lit.csv").then( data => buildLayers(data))
 })();
 

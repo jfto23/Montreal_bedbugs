@@ -5,8 +5,24 @@ body {
 }
 
 
-html, body, #mapid {
-	height: 100%;
+#mapid {
+	height: 100vh;
   width: 100%;
 }
+
+.container {
+  display: grid;
+  grid-template-columns: 6fr 1fr;
+}
+
+.sidebar {
+  background-color: #303030;
+  padding: 10px;
+}
+
+select {
+  padding: 5px;
+  margin: 10px;
+}
+
 
