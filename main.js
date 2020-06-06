@@ -15,51 +15,71 @@
     }).addTo(mymap);
   })();
 
-  function getArrayNeighbourhoods() {
-    let neighborhoods = [];
-    d3.csv("quartierreferencehabitation.csv").then( data => {
-      for (let i=0;i<data.length;i++) {
-        neighborhoods.push(data[i].
+  async function getArrayBoroughs() {
+    let boroughs = [];
 
-      }
+    const data = await d3.csv("boroughs.csv");
+    for (let i=0;i<data.length;i++) {
+      boroughs.push({ NOM_ARROND: data[i].NOM_ARROND, LATITUDE: data[i].LATITUDE, LONGITUDE:data[i].LONGITUDE, count: 0 });
+    }
 
-
-    });
-
-    return neighborhoods
+    return boroughs
   }
 
-  function buildLayers(data) {
-    let circle;
-    let circles = [];
+  async function buildLayers(data) {
+    let mainMarker;
+    let mainMarkers = [];
 
-    getArrayNeighbourhoods();
-
+    let boroughMarker;
+    let boroughMarkers =[];
+    let boroughs = await getArrayBoroughs();
 
     for (let j=2011; j<2020; j++) {
       for (let i=0; i<data.length; i++) {
         //main layers
         if (data[i].DATE_DECLARATION.startsWith(j.toString())) {
-          circle = L.circleMarker([data[i].LATITUDE, data[i].LONGITUDE], {
+          mainMarker = L.circleMarker([data[i].LATITUDE, data[i].LONGITUDE], {
             color: "cyan",
             fillColor: "cyan",
             opacity: 0,
             fillOpacity: 0.15,
             radius: 10,
           });
-          circles.push(circle);
+          mainMarkers.push(mainMarker);
         }
 
-        //neighborhoods layers
+        //boroughs layers
+        boroughs.forEach( borough => {
+          if (data[i].NOM_ARROND === borough.NOM_ARROND && data[i].DATE_DECLARATION.startsWith(j.toString())) {
+            borough.count += 1;
+          }
+        });
 
-        
       }
 
-      mainLayers.push(L.layerGroup(circles));
-      circles = [];
+      for (let borough of boroughs) {
+        boroughMarker = L.circleMarker([borough.LATITUDE, borough.LONGITUDE], {
+          color: "cyan",
+          fillColor: "cyan",
+          opacity: 0,
+          fillOpacity: 0.5,
+          radius: Math.sqrt(borough.count)*5
+        }).bindPopup(borough.NOM_ARROND + ": " + borough.count);
+
+        boroughMarkers.push(boroughMarker);
+        borough.count = 0;
+      }
+
+      mainLayers.push(L.layerGroup(mainMarkers));
+      mainMarkers = [];
+
+      boroughLayers.push(L.layerGroup(boroughMarkers));
+      boroughMarkers= [];
     }
+
     //2019 main layer testing
-    mymap.addLayer(mainLayers[8]);
+    mymap.addLayer(boroughLayers[5]);
+
 
   }
 
