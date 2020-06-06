@@ -1,7 +1,7 @@
 body {
 	margin: 0;
 	padding: 0;
-	color: white;
+	color: #eceff4;
 }
 
 
@@ -16,30 +16,53 @@ body {
 }
 
 .sidebar {
-  background-color: #303030;
+	background-color: #2e3440;
   padding: 10px;
+  border: 2px #5e81ac solid;
+  position: relative;
 }
 
 select {
-  padding: 5px;
+  -webkit-appearance: none;
+	margin: 15px;
+	background-color: #2e3440;
+	border: none;
+	box-shadow: 2px 2px 5px 1px #14161c;
+	color: #eceff4; 
+	font-size: 1.10rem;
+	border-radius: 5px;
+	padding: 5px;
+	-moz-appearance: none;
 }
 
-a {
-  color: white;
+#source {
+  color: #eceff4;
   text-decoration: none;
+  position: absolute;
+  bottom: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  left:0;
+  right:0;
+  margin: 15px;
 }
+
 
 .map-wrapper {
   position: relative;
 }
 
 button {
+  padding: 5px;
+  font-size: 1.10rem;
   position: absolute;
   top: 20px;
   right: 20px;
-  background-color: grey;
+  background-color: #2e3440;
+  border: none;
+  border-radius: 5px;
   z-index: 1000;
-  color: white;
+  color: #eceff4;
 }
 
 
