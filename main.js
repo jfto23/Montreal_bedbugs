@@ -111,16 +111,27 @@ const MainApp = (function() {
     }
   }
 
+  function toggleSideBar() {
+    let btn = document.querySelector("button")
+    if (btn.textContent === "Hide") {
+      document.querySelector(".container").style.gridTemplateColumns = "1fr"
+      btn.innerHTML = "Show"
+      mymap.invalidateSize();
+    }
+    else {
+      document.querySelector(".container").style.gridTemplateColumns = "9fr 1fr"
+      btn.innerHTML = "Hide"
+      mymap.invalidateSize();
+    }
 
-
-
-
+  }
 
 
   d3.csv("declarations-exterminations-punaises-de-lit.csv").then( data => buildLayers(data))
 
   return {
-    changeLayer
+    changeLayer,
+    toggleSideBar
   }
 })();
 

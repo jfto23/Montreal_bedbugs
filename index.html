@@ -14,7 +14,10 @@
 </head>
 <body>
 	<div class=container>
-		<div id="mapid"></div>
+    <div class=map-wrapper>
+      <div id="mapid"></div>
+      <button onclick="MainApp.toggleSideBar()">Hide</button>
+    </div>
 		<div class="sidebar">
 			<select id="year" onchange="MainApp.changeLayer()">
 				<option value="2011">2011</option>
@@ -32,6 +35,8 @@
 				<option value="all">All Incidents</option>
 				<option value="boroughs">Boroughs</option>
 			</select>
+
+      <a href="https://github.com/jfto23">Source code</a>
 
 		</div>
 	</div>
