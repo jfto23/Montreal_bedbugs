@@ -1,5 +1,5 @@
-  iet mymap;
-://github.com/jfto23/Montreal_bedbugs.gitonse MainApp = (function() {
+const MainApp = (function() {
+  let mymap;
   let mainLayers = [];
   let boroughLayers = [];
   // init map
