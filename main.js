@@ -2,7 +2,6 @@ const MainApp = (function() {
   let mymap;
   let mainLayers = [];
   let boroughLayers = [];
-
   // init map
   (function() {
     mymap = L.map('mapid')
@@ -13,11 +12,11 @@ const MainApp = (function() {
       maxZoom: 19
     }).addTo(mymap);
   })();
-
+  
   async function getArrayBoroughs() {
     let boroughs = [];
 
-    const data = await d3.csv("boroughs.csv");
+    const data = await d3.csv("/data/boroughs.csv");
     for (let i=0;i<data.length;i++) {
       boroughs.push({ NOM_ARROND: data[i].NOM_ARROND, LATITUDE: data[i].LATITUDE, LONGITUDE:data[i].LONGITUDE, count: 0 });
     }
@@ -127,7 +126,7 @@ const MainApp = (function() {
   }
 
 
-  d3.csv("declarations-exterminations-punaises-de-lit.csv").then( data => buildLayers(data))
+  d3.csv("/data/declarations-exterminations-punaises-de-lit.csv").then( data => buildLayers(data))
 
   return {
     changeLayer,
