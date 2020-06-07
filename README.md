@@ -1,4 +1,4 @@
-# Montreal Bed Fleas Map
+# Montreal Bedbugs Map
 
 This is a simple website to track bedbugs in Montreal.
 
