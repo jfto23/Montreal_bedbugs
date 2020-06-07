@@ -21,7 +21,6 @@ const MainApp = (function() {
       boroughs.push({ NOM_ARROND: data[i].NOM_ARROND, LATITUDE: data[i].LATITUDE, LONGITUDE:data[i].LONGITUDE, count: 0 });
     }
 
-		console.log(boroughs);
     return boroughs
   }
 
@@ -36,9 +35,6 @@ const MainApp = (function() {
 
     for (let j=2011; j<2020; j++) {
       for (let i=0; i<data.length; i++) {
-				if (i==21) {
-					console.log(boroughs[3].LONGITUDE);
-				}
         //main layers
         if (data[i].DATE_DECLARATION.startsWith(j.toString())) {
           mainMarker = L.circleMarker([data[i].LATITUDE, data[i].LONGITUDE], {
