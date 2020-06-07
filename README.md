@@ -2,6 +2,8 @@
 
 This is a simple website to track bedbugs in Montreal.
 
+![](https://github.com/jfto23/Montreal_bedbugs/blob/master/picture/Screenshot_2020-06-07_13-27-17.png)
+
 ## About
 
 The website uses Montreal's [open
