@@ -33,7 +33,9 @@ const MainApp = (function() {
     let boroughMarkers =[];
     let boroughs = await getArrayBoroughs();
 
-    for (let j=2011; j<2020; j++) {
+		let currentYear = new Date().getFullYear();
+
+    for (let j=2011; j<=currentYear; j++) {
       for (let i=0; i<data.length; i++) {
         //main layers
         if (data[i].DATE_DECLARATION.startsWith(j.toString())) {
@@ -125,6 +127,18 @@ const MainApp = (function() {
     }
 
   }
+
+	(function makeSelect() {
+		let currentYear = new Date().getFullYear()
+
+		for (let year=2011; year <= currentYear; year++) {
+			let option = document.createElement("option");
+			option.text = year;
+			option.value = year;
+
+			document.getElementById("year").appendChild(option)
+		}
+	})();
 
 
   d3.csv("./declarations-exterminations-punaises-de-lit.csv").then( data => buildLayers(data))
