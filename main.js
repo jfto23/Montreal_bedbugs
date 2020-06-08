@@ -19,7 +19,7 @@ const MainApp = (function() {
 
     const data = await d3.csv("./boroughs.csv");
     for (let i=0;i<data.length;i++) {
-      boroughs.push({ NOM_ARROND: data[i].NOM_ARROND, LATITUDE: data[i].LATITUDE, LONGITUDE:data[i].LONGITUDE, count: 0 });
+      boroughs.push({ NOM_ARROND: data[i].NOM_ARROND, LATITUDE: data[i].LATITUDE, LONGITUDE:data[i].LONGITUDE });
     }
 
     return boroughs
@@ -148,16 +148,6 @@ const MainApp = (function() {
 			option.value = year;
 
 			document.getElementById("year").appendChild(option)
-		}
-	})();
-
-	(async function initLayers() {
-		let boroughs = await getArrayBoroughs();
-
-		for (let boroughLayer of boroughLayers) {
-			for (let borough of boroughs) {
-				boroughLayer[borough.NOM_ARROND] = 0;
-			}
 		}
 	})();
 
