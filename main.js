@@ -2,6 +2,7 @@ const MainApp = (function() {
   let mymap;
   let mainLayers = [];
   let boroughLayers = [];
+	let currentYear = new Date().getFullYear();
   // init map
   (function() {
     mymap = L.map('mapid')
@@ -26,60 +27,71 @@ const MainApp = (function() {
 
 
   async function buildLayers(data) {
-    let mainMarker;
-    let mainMarkers = [];
 
-    let boroughMarker;
-    let boroughMarkers =[];
-    let boroughs = await getArrayBoroughs();
+		let boroughCount = [];
+		let boroughMarkers = [];
+		let mainMarkers = [];
 
-		let currentYear = new Date().getFullYear();
+		for (let year=2011; year <= currentYear; year++) {
+			mainMarkers.push([]);
+			boroughCount.push({});
+			boroughMarkers.push([]);
+		}
 
-    for (let j=2011; j<=currentYear; j++) {
-      for (let i=0; i<data.length; i++) {
-        //main layers
-        if (data[i].DATE_DECLARATION.startsWith(j.toString())) {
-          mainMarker = L.circleMarker([data[i].LATITUDE, data[i].LONGITUDE], {
-            color: "cyan",
-            fillColor: "cyan",
-            opacity: 0,
-            fillOpacity: 0.15,
-            radius: 10,
-          });
-          mainMarkers.push(mainMarker);
-        }
+		let boroughs = await getArrayBoroughs();
+		for (let yearCount of boroughCount) {
+			for (let borough of boroughs) {
+				yearCount[borough.NOM_ARROND] = 0;
+			}
+		}
 
-        //boroughs layers
-        boroughs.forEach( borough => {
-          if (data[i].NOM_ARROND === borough.NOM_ARROND && data[i].DATE_DECLARATION.startsWith(j.toString())) {
-            borough.count += 1;
-          }
-        });
+		for (let i=0; i<data.length;i++) {
+			mainMarker = L.circleMarker([data[i].LATITUDE, data[i].LONGITUDE], {
+				color: "cyan",
+				fillColor: "cyan",
+				opacity: 0,
+				fillOpacity: 0.15,
+				radius: 10,
+			});
 
-      }
+			let index = parseInt(data[i].DATE_DECLARATION.slice(0,4))-2011;
+			mainMarkers[index].push(mainMarker)
 
-      for (let borough of boroughs) {
-        boroughMarker = L.circleMarker([borough.LATITUDE, borough.LONGITUDE], {
-          color: "cyan",
-          fillColor: "cyan",
-          opacity: 0,
-          fillOpacity: 0.5,
-          radius: Math.sqrt(borough.count)*5
-        }).bindPopup(borough.NOM_ARROND + ": " + borough.count);
+			//borouhlayers
+			boroughCount[index][data[i].NOM_ARROND] += 1;
 
-        boroughMarkers.push(boroughMarker);
-        borough.count = 0;
-      }
+		}
 
-      mainLayers.push(L.layerGroup(mainMarkers));
-      mainMarkers = [];
+		for (let dict of boroughCount) {
+			for (let borough in dict) {
+				boroughs.forEach( element => {
+					if (element.NOM_ARROND === borough) {
+						let boroughMarker = L.circleMarker([element.LATITUDE, element.LONGITUDE], {
+							color: "cyan",
+							fillColor: "cyan",
+							opacity: 0,
+							fillOpacity: 0.5,
+							radius: Math.sqrt(dict[borough])*5
+						}).bindPopup(borough + ": " + dict[borough]);
 
-      boroughLayers.push(L.layerGroup(boroughMarkers));
-      boroughMarkers= [];
-    }
+						boroughMarkers[boroughCount.indexOf(dict)].push(boroughMarker);
+					}
 
-    mymap.addLayer(mainLayers[0]);
+				});
+			}
+		}
+		boroughMarkers.forEach( element => {
+			boroughLayers.push(L.layerGroup(element));
+		});
+
+		mainMarkers.forEach( element => {
+			mainLayers.push(L.layerGroup(element));
+
+		});
+
+		mymap.addLayer(mainLayers[0]);
   }
+
 
   function removeLayers() {
 
@@ -129,7 +141,6 @@ const MainApp = (function() {
   }
 
 	(function makeSelect() {
-		let currentYear = new Date().getFullYear()
 
 		for (let year=2011; year <= currentYear; year++) {
 			let option = document.createElement("option");
@@ -140,8 +151,17 @@ const MainApp = (function() {
 		}
 	})();
 
+	(async function initLayers() {
+		let boroughs = await getArrayBoroughs();
 
-  d3.csv("./declarations-exterminations-punaises-de-lit.csv").then( data => buildLayers(data))
+		for (let boroughLayer of boroughLayers) {
+			for (let borough of boroughs) {
+				boroughLayer[borough.NOM_ARROND] = 0;
+			}
+		}
+	})();
+
+	d3.csv("./declarations-exterminations-punaises-de-lit.csv").then( data => buildLayers(data))
 
   return {
     changeLayer,
