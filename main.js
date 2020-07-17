@@ -59,7 +59,6 @@ const MainApp = (function() {
 
 			//borouhlayers
 			boroughCount[index][data[i].NOM_ARROND] += 1;
-
 		}
 
 		for (let dict of boroughCount) {
